@@ -1,0 +1,349 @@
+:root {
+  --bg: #02040a;
+  --deep: #031a45;
+  --electric: #0878ff;
+  --cyan: #27d9ff;
+  --ice: #8defff;
+  --core: #f2fcff;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  background: var(--bg);
+  overflow: hidden;
+  color: var(--ice);
+  font-family: ui-monospace, 'SF Mono', 'Cascadia Mono', Menlo, Consolas, monospace;
+  -webkit-font-smoothing: antialiased;
+}
+
+.entity-root {
+  position: fixed;
+  inset: 0;
+  background: var(--bg);
+  touch-action: none;
+  cursor: default;
+}
+
+.entity-root canvas {
+  display: block;
+  width: 100% !important;
+  height: 100% !important;
+  opacity: 0;
+  animation: canvas-reveal 2.6s ease-out 0.35s forwards;
+}
+
+@keyframes canvas-reveal {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.entity-boot {
+  position: absolute;
+  inset: 0;
+  background: var(--bg);
+}
+
+.entity-noscript {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  letter-spacing: 0.4em;
+  opacity: 0.6;
+}
+
+/* ---------- intro sequence ---------- */
+
+.fx-intro {
+  position: absolute;
+  inset: 0;
+  background: #000;
+  pointer-events: none;
+  opacity: 1;
+  animation: fx-intro-out 3s ease-out 0.4s forwards;
+  z-index: 5;
+}
+
+@keyframes fx-intro-out {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+    visibility: hidden;
+  }
+}
+
+.fx-title {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 7vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  pointer-events: none;
+  z-index: 6;
+  opacity: 0;
+  animation: title-card 8.5s ease 3.4s forwards;
+  user-select: none;
+}
+
+.fx-title span {
+  font-size: 11px;
+  letter-spacing: 0.62em;
+  text-indent: 0.62em;
+  color: rgba(196, 242, 255, 0.78);
+  text-shadow: 0 0 18px rgba(39, 217, 255, 0.45);
+}
+
+.fx-title em {
+  font-style: normal;
+  font-size: 9px;
+  letter-spacing: 0.95em;
+  text-indent: 0.95em;
+  color: rgba(110, 190, 255, 0.4);
+}
+
+@keyframes title-card {
+  0% {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  16% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  72% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+.state-switch {
+  position: absolute;
+  bottom: 4.2vh;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 20px;
+  align-items: center;
+  z-index: 8;
+  opacity: 0;
+  animation: state-switch-in 2.2s ease 9.6s forwards;
+  user-select: none;
+}
+
+@keyframes state-switch-in {
+  to {
+    opacity: 1;
+  }
+}
+
+.state-switch button {
+  background: none;
+  border: none;
+  padding: 7px 4px 9px;
+  font-family: inherit;
+  font-size: 10px;
+  letter-spacing: 0.5em;
+  text-indent: 0.5em;
+  color: rgba(141, 200, 235, 0.3);
+  cursor: pointer;
+  position: relative;
+  transition: color 0.6s ease, text-shadow 0.6s ease;
+}
+
+.state-switch button::after {
+  content: '';
+  position: absolute;
+  left: 18%;
+  right: 18%;
+  bottom: 2px;
+  height: 1px;
+  background: currentColor;
+  opacity: 0;
+  transform: scaleX(0.4);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.state-switch button:hover {
+  color: rgba(180, 235, 255, 0.6);
+}
+
+.state-switch button[data-active='true'] {
+  color: rgba(215, 245, 255, 0.92);
+  text-shadow: 0 0 16px rgba(39, 217, 255, 0.55);
+}
+
+.state-switch button[data-active='true']::after {
+  opacity: 0.75;
+  transform: scaleX(1);
+}
+
+.state-switch .state-switch-sep {
+  width: 1px;
+  height: 12px;
+  background: rgba(120, 180, 220, 0.22);
+}
+
+/* RED STATE control accent */
+.state-switch.red button {
+  color: rgba(200, 130, 120, 0.32);
+}
+
+.state-switch.red button:hover {
+  color: rgba(255, 170, 140, 0.62);
+}
+
+.state-switch.red button[data-active='true'] {
+  color: rgba(255, 214, 186, 0.95);
+  text-shadow: 0 0 16px rgba(255, 90, 38, 0.6);
+}
+
+.state-switch.red .state-switch-sep {
+  background: rgba(200, 110, 90, 0.25);
+}
+
+.debug-state-row {
+  display: flex;
+  gap: 6px;
+  margin-top: 6px;
+}
+
+.debug-state {
+  opacity: 0.55;
+}
+
+.debug-state[data-active='true'] {
+  opacity: 1;
+  background: rgba(255, 60, 30, 0.2);
+  border-color: rgba(255, 110, 60, 0.5);
+}
+
+/* ---------- hidden debug system (development only) ---------- */
+
+.debug-panel {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  z-index: 20;
+  width: 252px;
+  padding: 12px 14px 14px;
+  background: rgba(2, 6, 16, 0.82);
+  border: 1px solid rgba(20, 90, 140, 0.45);
+  border-radius: 3px;
+  font-size: 9.5px;
+  letter-spacing: 0.08em;
+  color: rgba(141, 239, 255, 0.85);
+  backdrop-filter: blur(6px);
+  user-select: none;
+}
+
+.debug-panel h2 {
+  margin: 0 0 8px;
+  font-size: 9px;
+  font-weight: 500;
+  letter-spacing: 0.3em;
+  color: rgba(39, 217, 255, 0.9);
+}
+
+.debug-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin: 5px 0;
+}
+
+.debug-row label {
+  flex: 0 0 108px;
+  opacity: 0.75;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.debug-row output {
+  flex: 0 0 38px;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+  opacity: 0.9;
+}
+
+.debug-row input[type='range'] {
+  flex: 1;
+  appearance: none;
+  -webkit-appearance: none;
+  height: 2px;
+  background: rgba(39, 217, 255, 0.25);
+  border-radius: 1px;
+  outline: none;
+  cursor: ew-resize;
+}
+
+.debug-row input[type='range']::-webkit-slider-thumb {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--cyan);
+  box-shadow: 0 0 8px rgba(39, 217, 255, 0.8);
+}
+
+.debug-meta {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+  padding-top: 8px;
+  border-top: 1px solid rgba(20, 90, 140, 0.35);
+  opacity: 0.7;
+}
+
+.debug-hint {
+  position: absolute;
+  bottom: 12px;
+  right: 14px;
+  z-index: 20;
+  font-size: 8.5px;
+  letter-spacing: 0.22em;
+  color: rgba(141, 239, 255, 0.28);
+  pointer-events: none;
+  user-select: none;
+}
+
+.debug-button {
+  margin-top: 9px;
+  width: 100%;
+  padding: 5px 0;
+  background: rgba(8, 120, 255, 0.12);
+  border: 1px solid rgba(39, 217, 255, 0.3);
+  border-radius: 2px;
+  color: rgba(141, 239, 255, 0.85);
+  font-family: inherit;
+  font-size: 8.5px;
+  letter-spacing: 0.28em;
+  cursor: pointer;
+}
+
+.debug-button:hover {
+  background: rgba(8, 120, 255, 0.24);
+}
